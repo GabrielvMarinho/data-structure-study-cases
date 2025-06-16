@@ -22,7 +22,7 @@ class HashTable:
         if position <= self.size-1: 
             bucket = self.hash_table[position]
 
-            if bucket != () or bucket == ("-"):
+            if bucket != () or bucket == ("-", "-"):
                 return self.get_next_free_position(key, val, position+1)
             else:
                 return position
@@ -41,12 +41,13 @@ class HashTable:
             self.register_counting = self.register_counting +1
         
         elif bucket[0] != key:
-            
             position = self.get_next_free_position(key, val, hashed_key+1)
             if(position !=None):
                 self.hash_table[position] = (key, val)
                 self.register_counting = self.register_counting +1
-                
+
+        elif bucket[0] == key:
+            self.hash_table[hashed_key] = (key, val)
         else:
             print("This item already exist!")
         
@@ -118,42 +119,49 @@ class HashTable:
             
 
     
-hash_tab = HashTable(3)
+hash_tab = HashTable(10)
 
 
 
-
-print("🔹 Inserting values:")
+# Inserting values test
+print("-> Inserting values:")
 hash_tab.set_value("first_name", "Alice")
 hash_tab.set_value("age", "30")
 hash_tab.set_value("city", "New York")
 
-print("\n🔹 Retrieving values:")
+# Collision test
+print("\n-> Inserting key that causes collision (first_name2):")
+hash_tab.set_value("first_name2", "Bob")
+
+# Rewriting values test
+print("\n-> Rewrinting values:")
+hash_tab.set_value("first_name", "Tom")
+hash_tab.set_value("age", "15")
+hash_tab.set_value("city", "New Jersey")
+
+# Retrieving values test
+print("\n-> Retrieving values:")
 print("first_name:", hash_tab.get_value("first_name"))
 print("age:", hash_tab.get_value("age"))
 print("city:", hash_tab.get_value("city"))
 print("nickname (nonexistent):", hash_tab.get_value("nickname"))
 
 # Duplicate value test
-print("\n🔹 Inserting duplicate key (first_name):")
-hash_tab.set_value("first_name", "Alice")
-
-# Collision test
-print("\n🔹 Inserting key that may cause collision (first_name1):")
-hash_tab.set_value("first_name1", "Bob")
-print(hash_tab)
+print("\n-> Inserting duplicate key (first_name):")
+hash_tab.set_value("first_name", "George")
 
 # Deletion test
-print("\n🔹 Deleting a value:")
+print("\n-> Deleting a value:")
 hash_tab.delete_val("age")
 print(hash_tab)
 
 # Read after deletion
-print("\n🔹 Retrieving age after deletion:")
+print("\n-> Retrieving age after deletion:")
 print("age:", hash_tab.get_value("age"))
 
 # Automatic resize test
-print("\n🔹 Forcing a resize:")
+print("\n-> Forcing a resize:")
+
 hash_tab.set_value("country", "USA")
 hash_tab.set_value("hobby", "Reading")
 hash_tab.set_value("color", "Blue")

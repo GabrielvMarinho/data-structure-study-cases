@@ -1,5 +1,6 @@
 # this uses an open addressing so doesnt solve the collision problems
 import hashlib
+
 class HashTable:
 
     def __init__(self, size):
@@ -29,18 +30,18 @@ class HashTable:
         else:
             return self.get_next_free_position(key, val, 0)
     
-    def set_val(self, key, val):
-
-        
+    def set_value(self, key, val):
 
         hashed_key = self.get_position(key)
         bucket = self.hash_table[hashed_key]
 
+        
         if bucket == ():
             self.hash_table[hashed_key] =  (key, val)
             self.register_counting = self.register_counting +1
-
-        elif bucket[0] != (key, val):
+        
+        elif bucket[0] != key:
+            
             position = self.get_next_free_position(key, val, hashed_key+1)
             if(position !=None):
                 self.hash_table[position] = (key, val)
@@ -68,7 +69,7 @@ class HashTable:
             return self.get_next_position_equals(key, 0)
             
 
-    def get_val(self, key):
+    def get_value(self, key):
         hashed_key = self.get_position(key)
 
         
@@ -113,7 +114,7 @@ class HashTable:
         for bucket in old_hash_table:
             if(bucket != ()):
                 [key, value] = bucket
-                self.set_val(key, value)
+                self.set_value(key, value)
             
 
     
@@ -123,23 +124,23 @@ hash_tab = HashTable(3)
 
 
 print("🔹 Inserting values:")
-hash_tab.set_val("first_name", "Alice")
-hash_tab.set_val("age", "30")
-hash_tab.set_val("city", "New York")
+hash_tab.set_value("first_name", "Alice")
+hash_tab.set_value("age", "30")
+hash_tab.set_value("city", "New York")
 
 print("\n🔹 Retrieving values:")
-print("first_name:", hash_tab.get_val("first_name"))
-print("age:", hash_tab.get_val("age"))
-print("city:", hash_tab.get_val("city"))
-print("nickname (nonexistent):", hash_tab.get_val("nickname"))
+print("first_name:", hash_tab.get_value("first_name"))
+print("age:", hash_tab.get_value("age"))
+print("city:", hash_tab.get_value("city"))
+print("nickname (nonexistent):", hash_tab.get_value("nickname"))
 
 # Duplicate value test
 print("\n🔹 Inserting duplicate key (first_name):")
-hash_tab.set_val("first_name", "Alice")
+hash_tab.set_value("first_name", "Alice")
 
 # Collision test
 print("\n🔹 Inserting key that may cause collision (first_name1):")
-hash_tab.set_val("first_name1", "Bob")
+hash_tab.set_value("first_name1", "Bob")
 print(hash_tab)
 
 # Deletion test
@@ -149,11 +150,11 @@ print(hash_tab)
 
 # Read after deletion
 print("\n🔹 Retrieving age after deletion:")
-print("age:", hash_tab.get_val("age"))
+print("age:", hash_tab.get_value("age"))
 
 # Automatic resize test
 print("\n🔹 Forcing a resize:")
-hash_tab.set_val("country", "USA")
-hash_tab.set_val("hobby", "Reading")
-hash_tab.set_val("color", "Blue")
+hash_tab.set_value("country", "USA")
+hash_tab.set_value("hobby", "Reading")
+hash_tab.set_value("color", "Blue")
 print(hash_tab)
